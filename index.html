@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>20 Video Viral - Verifikasi Akses</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* === CSS ASLI TIDAK DIUBAH === */
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f0f0f;color:#fff;font-family:Segoe UI,Arial,sans-serif}
+.verification-overlay{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:linear-gradient(135deg,#0f0f0f,#1a1a2e);
+z-index:9999;display:flex;justify-content:center;align-items:center;padding:20px}
+.verification-box{
+background:rgba(26,26,26,.95);
+border:2px solid #ff4757;border-radius:15px;
+padding:40px 30px;max-width:500px;width:100%;
+text-align:center}
+.link-button{
+display:block;width:100%;margin-top:8px;
+background:#ff4757;color:#fff;
+border:none;padding:12px;border-radius:8px;
+font-weight:bold;cursor:pointer}
+.link-button.completed{background:#00aa00}
+.progress-bar{width:100%;height:8px;background:#333;border-radius:4px;margin:15px 0}
+.progress{height:100%;background:#ff4757;width:0%}
+.access-button{
+display:none;margin-top:15px;
+background:#00aa00;color:#fff;
+padding:15px;border:none;border-radius:8px;
+font-size:18px;font-weight:bold;cursor:pointer}
+.hidden-content{display:none;padding:20px}
+.video-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+gap:20px}
+.video-card{background:#1a1a1a;border-radius:8px;overflow:hidden}
+.video-thumbnail{height:160px;background:#000;cursor:pointer}
+.video-thumbnail video{width:100%;height:100%;object-fit:cover}
+.video-title{padding:12px;font-weight:bold}
+</style>
+</head>
+<body>
+
+<!-- OVERLAY VERIFIKASI -->
+<div class="verification-overlay" id="verificationOverlay">
+<div class="verification-box">
+<h2 style="color:#ff4757">VERIFIKASI AKSES</h2>
+<p>Klik <b>SEMUA 11 LINK</b> untuk membuka video</p>
+
+<div class="progress-bar">
+<div class="progress" id="progressBar"></div>
+</div>
+
+<!-- ✅ LINK AKSES (11) -->
+<button class="link-button" id="link1Btn" onclick="openLink('https://s.shopee.co.id/9fEFxmUSTQ',1)">LINK VERIFIKASI 1</button>
+<button class="link-button" id="link2Btn" onclick="openLink('https://otieu.com/4/9703244',2)">LINK VERIFIKASI 2</button>
+<button class="link-button" id="link3Btn" onclick="openLink('https://otieu.com/4/9815426',3)">LINK VERIFIKASI 3</button>
+<button class="link-button" id="link4Btn" onclick="openLink('https://otieu.com/4/9815424',4)">LINK VERIFIKASI 4</button>
+<button class="link-button" id="link5Btn" onclick="openLink('https://otieu.com/4/10071971',5)">LINK VERIFIKASI 5</button>
+<button class="link-button" id="link6Btn" onclick="openLink('https://otieu.com/4/9703236',6)">LINK VERIFIKASI 6</button>
+<button class="link-button" id="link7Btn" onclick="openLink('https://otieu.com/4/9815427',7)">LINK VERIFIKASI 7</button>
+<button class="link-button" id="link8Btn" onclick="openLink('https://otieu.com/4/9815425',8)">LINK VERIFIKASI 8</button>
+<button class="link-button" id="link9Btn" onclick="openLink('https://otieu.com/4/9815422',9)">LINK VERIFIKASI 9</button>
+<button class="link-button" id="link10Btn" onclick="openLink('https://otieu.com/4/9815420',10)">LINK VERIFIKASI 10</button>
+<button class="link-button" id="link11Btn" onclick="openLink('https://otieu.com/4/9815428',11)">LINK VERIFIKASI 11</button>
+
+<button class="access-button" id="accessButton" onclick="grantAccess()">
+AKSES VIDEO SEKARANG
+</button>
+</div>
+</div>
+
+<!-- KONTEN VIDEO -->
+<div class="hidden-content" id="videoContent">
+<h2 style="text-align:center;color:#ff4757">20 VIDEO VIRAL</h2>
+<div class="video-grid" id="videoGrid"></div>
+</div>
+
+<script>
+/* === SCRIPT ASLI TIDAK DIUBAH === */
+let link1Clicked=false,link2Clicked=false,link3Clicked=false,link4Clicked=false,
+link5Clicked=false,link6Clicked=false,link7Clicked=false,link8Clicked=false,
+link9Clicked=false,link10Clicked=false,link11Clicked=false;
+let verificationComplete=false;
+
+const videoLinks=[
+"https://cdn.videy.co/ASB09ik81.mp4",
+"https://cdn.videy.co/ASgIAmd61.mp4",
+"https://cdn.videy.co/ASlPKjNV1.mp4",
+"https://cdn.videy.co/aSMMnvHt1.mp4",
+"https://cdn.videy.co/aT4M6bxd1.mp4",
+"https://cdn.videy.co/atqWhfjZ1.mp4",
+"https://cdn.videy.co/Attvl5Sm1.mp4",
+"https://cdn.videy.co/atXESOpi1.mp4",
+"https://cdn.videy.co/Au5dhJGT1.mp4",
+"https://cdn.videy.co/AUvpvN4K1.mp4"
+];
+
+function openLink(url,n){
+window.open(url,'_blank');
+document.getElementById(`link${n}Btn`).classList.add('completed');
+document.getElementById(`link${n}Btn`).disabled=true;
+
+window[`link${n}Clicked`]=true;
+updateProgress();
+checkVerification();
+}
+
+function updateProgress(){
+let total=11,done=0;
+for(let i=1;i<=11;i++){if(window[`link${i}Clicked`])done++}
+document.getElementById('progressBar').style.width=(done/total*100)+'%';
+}
+
+function checkVerification(){
+if(!verificationComplete &&
+link1Clicked&&link2Clicked&&link3Clicked&&link4Clicked&&link5Clicked&&
+link6Clicked&&link7Clicked&&link8Clicked&&link9Clicked&&link10Clicked&&link11Clicked){
+verificationComplete=true;
+setTimeout(()=>document.getElementById('accessButton').style.display='block',1500);
+}
+}
+
+function grantAccess(){
+document.getElementById('verificationOverlay').style.display='none';
+document.getElementById('videoContent').style.display='block';
+renderVideos();
+}
+
+function renderVideos(){
+const grid=document.getElementById('videoGrid');
+videoLinks.forEach((v,i)=>{
+const card=document.createElement('div');
+card.className='video-card';
+card.innerHTML=`
+<div class="video-thumbnail">
+<video src="${v}" muted></video>
+</div>
+<div class="video-title">VIDEO ${i+1}</div>`;
+card.onclick=()=>{const vid=card.querySelector('video');vid.controls=true;vid.play()};
+grid.appendChild(card);
+});
+}
+</script>
+
+</body>
+</html>
